@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "Asus",
+    "Category": "Laptop",
+    "Summery": "summery",
+    "Description ": "Description",
+    "ImageFile": "ImageFile",
+    "price": "100"
+
+  },
+
+  {
+    "Name": " Dell",
+    "Category": "Laptop",
+    "Summery": "Summery",
+    "Description ": "Description",
+    "ImageFile": "ImageFile",
+    "price": "200"
+
+  }
+]
