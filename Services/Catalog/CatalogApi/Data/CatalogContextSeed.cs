@@ -53,7 +53,7 @@ public class CatalogContextSeed
         new Product
         {
             Id = "64e4a1b7a2c39b5f00a1a104",
-            Name = "Laptop Stand",
+            Name = "Laptop",
             Category = "Accessories",
             Summery = "Adjustable aluminum laptop stand",
             Description = "Ergonomic stand for laptops up to 17 inches, helps with cooling.",

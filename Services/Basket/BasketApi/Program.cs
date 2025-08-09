@@ -1,21 +1,29 @@
+using BasketApi.GRPC_Services;
 using BasketApi.Repositories;
+using DiscountGrpc.Protos;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 
+
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 
-//builder.Services.AddStackExchangeRedisCache(options =>
-//{
-//    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionStrings");
-//});
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(
+    option =>
+    {
+        option.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]);
+    });
+
+builder.Services.AddScoped<DiscountGrpcService>();
+
+
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
@@ -23,7 +31,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
