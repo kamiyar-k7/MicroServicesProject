@@ -12,6 +12,7 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/Basket/BasketApi/BasketApi.csproj", "Services/Basket/BasketApi/"]
+COPY ["BuildingBlocks/EventBusMessages/EventBusMessages.csproj", "BuildingBlocks/EventBusMessages/"]
 RUN dotnet restore "./Services/Basket/BasketApi/BasketApi.csproj"
 COPY . .
 WORKDIR "/src/Services/Basket/BasketApi"

@@ -1,4 +1,8 @@
+using EventBusMessages.Common;
+using MassTransit;
+using OrderingApi.EventBusConsumer;
 using OrderingApi.Extensions;
+using OrderingApi.Mapping;
 using OrderingApplication.ServiceRegistration;
 using OrderingInfrastructure.Persistence;
 using OrderingInfrastructure.ServiceRegistration;
@@ -16,9 +20,30 @@ builder.Services.AddSwaggerGen();
 #region Services Registration0
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.AddAutoMapper(typeof(OrderingProfile).Assembly);
 #endregion
 
 
+#region Mass transit
+
+builder.Services.AddMassTransit(cnf =>
+{
+    cnf.AddConsumer<BasketCheckoutConsumer>();
+
+    cnf.UsingRabbitMq((ctx, conf) =>
+    {
+        conf.Host(builder.Configuration.GetValue<string>("EventBusSettings:HostAddress"));
+        conf.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
+        {
+            c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
+        });
+    });
+});
+
+builder.Services.AddScoped<BasketCheckoutConsumer>();
+
+#endregion
 
 var app = builder.Build();
 
